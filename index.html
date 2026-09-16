@@ -503,6 +503,7 @@ async function authenticate() {
     else addLog("type = webauthn.get", "ok");
     if (clientData.origin !== location.origin) addLog("Origin mismatch", "fail");
     else addLog("Origin matches (" + location.origin + ")", "ok");
+    markLog("Verifying client data");
     const clientDataHash = await sha256(clientDataJSON);
 
     addLog("Verifying authenticator data", "pending");
@@ -522,6 +523,7 @@ async function authenticate() {
     else addLog("Sign counter repeated! Possible clone", "fail");
     cred.signCount = signCount;
     saveCredential(cred);
+    markLog("Verifying authenticator data");
 
     addLog("Verifying cryptographic signature", "pending");
     const x = b64urlDecode(cred.pub.x), y = b64urlDecode(cred.pub.y);
